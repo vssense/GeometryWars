@@ -72,6 +72,7 @@ class Bullet : public CircleShapedEntity {
 
  private:
   int damage_;
+  Vec2<float> velocity_;
 };
 
 bool CollideBoxWithCircle(BoundingBox* box, CircleShapedEntity* entity);
@@ -90,5 +91,8 @@ void ResponseEnemyWithPlayer(EntityManager* manager, Enemy* enemy, Player* playe
 
 void ResponseBulletWithEnemy(EntityManager* manager, Bullet* bullet, Enemy* enemy);
 void ResponseEnemyWithBullet(EntityManager* manager, Enemy* enemy, Bullet* bullet);
+
+void ResponseBulletWithBox(EntityManager* manager, Bullet* bullet, BoundingBox* Box);
+void ResponseBoxWithBullet(EntityManager* manager, BoundingBox* box, Bullet* bullet);
 
 #endif // _GEOMETRY_WARS_ENTITIES_HPP_INCLUDED

@@ -13,14 +13,14 @@ const DetectCollisionFunc EntityManager::DetectCollision[kNumEntityTypes][kNumEn
 };
 
 const ResponseCollisionFunc EntityManager::ResponseCollision[kNumEntityTypes][kNumEntityTypes] = {
-  {(ResponseCollisionFunc)nullptr, (ResponseCollisionFunc)nullptr,
+  {(ResponseCollisionFunc)nullptr, (ResponseCollisionFunc)ResponsePlayerWithEnemy,
    (ResponseCollisionFunc)nullptr, (ResponseCollisionFunc)ResposePlayerWithBox},
-  {(ResponseCollisionFunc)nullptr, (ResponseCollisionFunc)ResponseEnemyWithEnemy,
-   (ResponseCollisionFunc)nullptr, (ResponseCollisionFunc)ResposeEnemyWithBox},
-  {(ResponseCollisionFunc)nullptr, (ResponseCollisionFunc)nullptr,
-   (ResponseCollisionFunc)nullptr, (ResponseCollisionFunc)nullptr},
-  {(ResponseCollisionFunc)nullptr, (ResponseCollisionFunc)ResposeBoxWithEnemy,
-   (ResponseCollisionFunc)ResposeBoxWithPlayer, (ResponseCollisionFunc)nullptr}
+  {(ResponseCollisionFunc)ResponseEnemyWithPlayer, (ResponseCollisionFunc)ResponseEnemyWithEnemy,
+   (ResponseCollisionFunc)ResponseEnemyWithBullet, (ResponseCollisionFunc)ResposeEnemyWithBox},
+  {(ResponseCollisionFunc)nullptr, (ResponseCollisionFunc)ResponseBulletWithEnemy,
+   (ResponseCollisionFunc)nullptr, (ResponseCollisionFunc)ResponseBulletWithBox},
+  {(ResponseCollisionFunc)ResposeBoxWithPlayer, (ResponseCollisionFunc)ResposeBoxWithEnemy,
+   (ResponseCollisionFunc)ResponseBoxWithBullet, (ResponseCollisionFunc)nullptr}
 };
 
 EntityManager::~EntityManager() {
@@ -67,9 +67,15 @@ void EntityManager::Render(Renderer* renderer) {
 void EntityManager::Delete(Entity* entity) {
   assert(entity);
 
-  delete entity;
 
-  for 
+  for (auto it = entities_.begin(); it != entities_.end(); ++it) {
+    if (*it == entity) {
+      entities_.erase(it);
+      break;
+    }
+  }
+
+  delete entity;
 }
 
 void EntityManager::RemoveDeletedEntities() {

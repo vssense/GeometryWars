@@ -2,7 +2,7 @@
 
 ## Usage
 ```
-$ git clone
+$ git clone https://github.com/vssense/GeometryWars.git
 $ mkdir build
 $ cd build
 $ ./game

@@ -83,7 +83,9 @@ Vec2<int>& BoundingBox::GetSize() {
 }
 
 Bullet::Bullet(int damage, Vec2<int> origin, Vec2<float> velocity)
-  : CircleShapedEntity(kBullet, origin, kBulletRadius), damage_(damage) {}
+  : CircleShapedEntity(kBullet, origin, kBulletRadius),
+    damage_(damage),
+    velocity_(velocity) {}
 
 int& Bullet::GetDamage() {
   return damage_;
@@ -186,14 +188,14 @@ void ResponseEnemyWithEnemy(EntityManager* /*manager*/, Enemy* lhs, Enemy* rhs) 
 }
 
 void ResponsePlayerWithEnemy(EntityManager* manager, Player* player, Enemy* enemy) {
-  ResponseEnemyWithPlayer(manager, enemy, player)
+  ResponseEnemyWithPlayer(manager, enemy, player);
 }
 
 void ResponseEnemyWithPlayer(EntityManager* /*manager*/, Enemy* enemy, Player* player) {
   assert(enemy);
   assert(player);
 
-
+  std::cout << "DIE\n";
 }
 
 void ResponseBulletWithEnemy(EntityManager* manager, Bullet* bullet, Enemy* enemy) {
@@ -201,12 +203,26 @@ void ResponseBulletWithEnemy(EntityManager* manager, Bullet* bullet, Enemy* enem
 }
 
 void ResponseEnemyWithBullet(EntityManager* manager, Enemy* enemy, Bullet* bullet) {
+  assert(manager);
   assert(enemy);
   assert(bullet);
 
   enemy->GetHP() -= bullet->GetDamage();
 
   if (enemy->GetHP() <= 0) {
-    
+    manager->Delete(enemy);
   }
 }
+
+void ResponseBulletWithBox(EntityManager* manager, Bullet* bullet, BoundingBox* box) {
+  ResponseBoxWithBullet(manager, box, bullet);
+}
+
+void ResponseBoxWithBullet(EntityManager* manager, BoundingBox* box, Bullet* bullet) {
+  assert(manager);
+  assert(bullet);
+  assert(box);
+
+  manager->Delete(bullet);
+}
+
