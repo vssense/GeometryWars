@@ -26,6 +26,10 @@ void Player::OnUpdate(float dt) {
 void Player::Render(Renderer* renderer) {
   renderer->SetColor(kPlayerColor);
   renderer->FillCircle(center_.x, center_.y, radius_);
+
+  renderer->SetColor(kRed);
+  renderer->DrawCircle(center_.x, center_.y, radius_);
+  renderer->DrawCircle(center_.x, center_.y, radius_ - 1);
 }
 
 void Player::Rotate(int to_x, int to_y) {
