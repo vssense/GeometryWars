@@ -67,15 +67,7 @@ void EntityManager::Render(Renderer* renderer) {
 void EntityManager::Delete(Entity* entity) {
   assert(entity);
 
-
-  for (auto it = entities_.begin(); it != entities_.end(); ++it) {
-    if (*it == entity) {
-      entities_.erase(it);
-      break;
-    }
-  }
-
-  delete entity;
+  entity->Delete();
 }
 
 void EntityManager::RemoveDeletedEntities() {

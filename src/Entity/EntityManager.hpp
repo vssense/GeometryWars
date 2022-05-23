@@ -16,8 +16,8 @@ class EntityManager {
   ~EntityManager();
 
   template <class EntityT, typename... Args>
-  Entity* CreateEntity(Args&&... args) {
-    Entity* entity = new EntityT(std::forward<Args>(args)...);
+  EntityT* CreateEntity(Args&&... args) {
+    EntityT* entity = new EntityT(std::forward<Args>(args)...);
 
     entities_.push_back(entity);
     return entity;

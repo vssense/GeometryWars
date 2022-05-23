@@ -15,9 +15,10 @@
 
 static Renderer* renderer = nullptr;
 static EntityManager manager{};
+static Player* player = nullptr;
 
 void CreateGeometryWarsEntities() {
-  manager.CreateEntity<Player>(Vec2<int>{40, 40});
+  player = manager.CreateEntity<Player>(Vec2<int>{40, 40});
   manager.CreateEntity<BoundingBox>(Vec2<int>(0, 0), Vec2<int>(SCREEN_WIDTH, SCREEN_HEIGHT));
 
   manager.CreateEntity<Enemy>(Vec2<int>{700, 70}, Vec2<float>(-121, -59));
@@ -35,6 +36,11 @@ void initialize() {
 void act(float dt) {
   if (is_key_pressed(VK_ESCAPE)) {
     schedule_quit_game();
+  }
+
+  player->Rotate(get_cursor_x(), get_cursor_y());
+  if (is_mouse_button_pressed(0)) {
+    player->SpawnBullet(&manager);
   }
 
   manager.CollideEntities();

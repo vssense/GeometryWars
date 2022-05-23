@@ -15,15 +15,19 @@ class Player : public CircleShapedEntity {
   virtual void OnUpdate(float dt) override;
   virtual void Render(Renderer* renderer) override;
 
+  void Rotate(int to_x, int to_y);
+  void SpawnBullet(EntityManager* manager);
+
   int& GetHP();
 
   Vec2<float>& GetCoords();
-
+  Vec2<float>& GetView();
   Vec2<float>& GetVelocity();
 
  private:
   int hp_{kMaxHP};
 
+  Vec2<float> view_;
   Vec2<float> coords_;
   Vec2<float> velocity_;
 };
@@ -67,6 +71,9 @@ class BoundingBox : public Entity {
 class Bullet : public CircleShapedEntity {
  public:
   Bullet(int damage, Vec2<int> origin, Vec2<float> velocity);
+
+  virtual void OnUpdate(float dt) override;
+  virtual void Render(Renderer* renderer) override;
 
   int& GetDamage();
 

@@ -11,7 +11,11 @@ const Color kEnemyColor = kRed;
 
 const int kBulletRadius = 3;
 
-Player::Player(Vec2<int> start_coords) : CircleShapedEntity(kPlayer, start_coords, 20), coords_(center_.x, center_.y), velocity_(340, 320) {}
+Player::Player(Vec2<int> start_coords)
+    : CircleShapedEntity(kPlayer, start_coords, 20),
+      view_(Vec2<float>(10, 10).Normalize()),
+      coords_(center_.x, center_.y),
+      velocity_(340, 320) {}
 
 void Player::OnUpdate(float dt) {
   coords_ += dt * velocity_;
@@ -23,8 +27,22 @@ void Player::Render(Renderer* renderer) {
   renderer->FillCircle(center_.x, center_.y, radius_);
 }
 
+void Player::Rotate(int to_x, int to_y) {
+  view_ = (Vec2<float>(to_x, to_y) - Vec2<float>(center_.x, center_.y)).Normalize();
+}
+
+void Player::SpawnBullet(EntityManager* manager) {
+  assert(manager);
+
+  manager->CreateEntity<Bullet>(100, center_, 1000 * view_);
+}
+
 int& Player::GetHP() {
   return hp_;
+}
+
+Vec2<float>& Player::GetView() {
+  return view_;
 }
 
 Vec2<float>& Player::GetCoords() {
@@ -86,6 +104,19 @@ Bullet::Bullet(int damage, Vec2<int> origin, Vec2<float> velocity)
   : CircleShapedEntity(kBullet, origin, kBulletRadius),
     damage_(damage),
     velocity_(velocity) {}
+
+void Bullet::OnUpdate(float dt) {
+  center_.x += dt * velocity_.x;
+  center_.y += dt * velocity_.y;
+}
+
+void Bullet::Render(Renderer* renderer) {
+  assert(renderer);
+
+  renderer->SetColor(kBlack);
+  renderer->FillCircle(center_.x, center_.y, kBulletRadius);
+}
+
 
 int& Bullet::GetDamage() {
   return damage_;
