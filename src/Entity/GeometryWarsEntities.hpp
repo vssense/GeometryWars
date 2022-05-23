@@ -18,15 +18,11 @@ class Player : public CircleShapedEntity {
   void Rotate(int to_x, int to_y);
   void SpawnBullet(EntityManager* manager);
 
-  int& GetHP();
-
   Vec2<float>& GetCoords();
   Vec2<float>& GetView();
   Vec2<float>& GetVelocity();
 
  private:
-  int hp_{kMaxHP};
-
   Vec2<float> view_;
   Vec2<float> coords_;
   Vec2<float> velocity_;

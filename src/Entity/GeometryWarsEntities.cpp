@@ -10,6 +10,7 @@ const Color kPlayerColor = kLightGreen;
 const Color kEnemyColor = kRed;
 
 const int kBulletRadius = 3;
+const int kBulletSpeed = 2500;
 
 Player::Player(Vec2<int> start_coords)
     : CircleShapedEntity(kPlayer, start_coords, 20),
@@ -34,11 +35,7 @@ void Player::Rotate(int to_x, int to_y) {
 void Player::SpawnBullet(EntityManager* manager) {
   assert(manager);
 
-  manager->CreateEntity<Bullet>(100, center_, 1000 * view_);
-}
-
-int& Player::GetHP() {
-  return hp_;
+  manager->CreateEntity<Bullet>(10, center_, kBulletSpeed * view_);
 }
 
 Vec2<float>& Player::GetView() {
@@ -226,7 +223,7 @@ void ResponseEnemyWithPlayer(EntityManager* /*manager*/, Enemy* enemy, Player* p
   assert(enemy);
   assert(player);
 
-  std::cout << "DIE\n";
+  schedule_quit_game();
 }
 
 void ResponseBulletWithEnemy(EntityManager* manager, Bullet* bullet, Enemy* enemy) {
@@ -243,6 +240,8 @@ void ResponseEnemyWithBullet(EntityManager* manager, Enemy* enemy, Bullet* bulle
   if (enemy->GetHP() <= 0) {
     manager->Delete(enemy);
   }
+
+  manager->Delete(bullet);
 }
 
 void ResponseBulletWithBox(EntityManager* manager, Bullet* bullet, BoundingBox* box) {

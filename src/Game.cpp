@@ -13,12 +13,15 @@
 //  is_mouse_button_pressed(int button) - check if mouse button is pressed (0 - left button, 1 - right button)
 //  schedule_quit_game() - quit game after act()
 
+const float kKD = 0.1;
+
 static Renderer* renderer = nullptr;
 static EntityManager manager{};
 static Player* player = nullptr;
+static float time_from_last_shot = 0;
 
 void CreateGeometryWarsEntities() {
-  player = manager.CreateEntity<Player>(Vec2<int>{40, 40});
+  player = manager.CreateEntity<Player>(Vec2<int>{600, 600});
   manager.CreateEntity<BoundingBox>(Vec2<int>(0, 0), Vec2<int>(SCREEN_WIDTH, SCREEN_HEIGHT));
 
   manager.CreateEntity<Enemy>(Vec2<int>{700, 70}, Vec2<float>(-121, -59));
@@ -34,13 +37,34 @@ void initialize() {
 }
 
 void act(float dt) {
+  time_from_last_shot += dt;
   if (is_key_pressed(VK_ESCAPE)) {
     schedule_quit_game();
   }
 
   player->Rotate(get_cursor_x(), get_cursor_y());
   if (is_mouse_button_pressed(0)) {
-    player->SpawnBullet(&manager);
+    if (time_from_last_shot > kKD) {
+      player->SpawnBullet(&manager);
+      time_from_last_shot = 0;
+    }
+  }
+
+  player->GetVelocity() = {0, 0};
+  if (is_key_pressed(VK_DOWN)) {
+    player->GetVelocity() += {0, 500};
+  }
+  
+  if (is_key_pressed(VK_UP)) {
+    player->GetVelocity() += {0, -500};
+  }
+  
+  if (is_key_pressed(VK_LEFT)) {
+    player->GetVelocity() += {-500, 0};
+  }
+
+  if (is_key_pressed(VK_RIGHT)) {
+    player->GetVelocity() += {500, 0};
   }
 
   manager.CollideEntities();
