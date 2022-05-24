@@ -29,7 +29,12 @@ void Player::Render(Renderer* renderer) {
 
   renderer->SetColor(kRed);
   renderer->DrawCircle(center_.x, center_.y, radius_);
-  renderer->DrawCircle(center_.x, center_.y, radius_ - 1);
+  // renderer->DrawCircle(center_.x, center_.y, radius_ - 1);
+
+  int x1 = center_.x + view_.x * radius_;
+  int y1 = center_.y + view_.y * radius_;
+
+  renderer->DrawLine(center_.x, center_.y, x1, y1);
 }
 
 void Player::Rotate(int to_x, int to_y) {
