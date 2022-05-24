@@ -11,5 +11,6 @@ const Color kLightGreen = 0x003BFF6C;
 const Color kDarkBlue   = 0x000000FF;
 const Color kBlue       = 0x004493F5;
 const Color kOrange     = 0x00FF7F3B;
+const Color kYellow     = 0x00FAE452;
 
 #endif // _COLOR_HPP_INCLUDED

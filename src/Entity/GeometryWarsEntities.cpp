@@ -6,7 +6,6 @@
 #include <iostream>
 
 const Color kBoundingBoxColor = kRed;
-const Color kPlayerColor = kLightGreen;
 const Color kEnemyColor = kRed;
 
 const int kBulletRadius = 3;
@@ -24,10 +23,10 @@ void Player::OnUpdate(float dt) {
 }
 
 void Player::Render(Renderer* renderer) {
-  renderer->SetColor(kPlayerColor);
+  renderer->SetColor(kYellow);
   renderer->FillCircle(center_.x, center_.y, radius_);
 
-  renderer->SetColor(kRed);
+  renderer->SetColor(kOrange);
   renderer->DrawCircle(center_.x, center_.y, radius_);
   // renderer->DrawCircle(center_.x, center_.y, radius_ - 1);
 
@@ -72,6 +71,9 @@ void Enemy::OnUpdate(float dt) {
 void Enemy::Render(Renderer* renderer) {
   renderer->SetColor(kEnemyColor);
   renderer->FillCircle(center_.x, center_.y, radius_);
+
+  renderer->SetColor(kBlack);
+  renderer->DrawCircle(center_.x, center_.y, radius_);
 }
 
 int& Enemy::GetHP() {
