@@ -13,16 +13,18 @@
 //  is_mouse_button_pressed(int button) - check if mouse button is pressed (0 - left button, 1 - right button)
 //  schedule_quit_game() - quit game after act()
 
-const float kKD = 0.1;
+const float kWeaponCD = 0.1;
+const float kSpawnDelay = 3;
 
 static Renderer* renderer = nullptr;
 static EntityManager manager{};
 static Player* player = nullptr;
 static float time_from_last_shot = 0;
+static float time_from_last_spawn = 0;
 
 void CreateGeometryWarsEntities() {
-  player = manager.CreateEntity<Player>(Vec2<int>{600, 600});
   manager.CreateEntity<BoundingBox>(Vec2<int>(0, 0), Vec2<int>(SCREEN_WIDTH, SCREEN_HEIGHT));
+  player = manager.CreateEntity<Player>(Vec2<int>{600, 600});
 
   manager.CreateEntity<Enemy>(Vec2<int>{700, 70}, Vec2<float>(-121, -59));
   manager.CreateEntity<Enemy>(Vec2<int>{70, 70}, Vec2<float>(121, -59));
@@ -38,16 +40,24 @@ void initialize() {
 
 void act(float dt) {
   time_from_last_shot += dt;
+  time_from_last_spawn += dt;
+
   if (is_key_pressed(VK_ESCAPE)) {
     schedule_quit_game();
   }
 
   player->Rotate(get_cursor_x(), get_cursor_y());
   if (is_mouse_button_pressed(0)) {
-    if (time_from_last_shot > kKD) {
+    if (time_from_last_shot > kWeaponCD) {
       player->SpawnBullet(&manager);
       time_from_last_shot = 0;
     }
+  }
+
+  if (time_from_last_spawn > kSpawnDelay) {
+    manager.CreateEntity<Enemy>(Vec2<int>{std::rand() % 700, std::rand() % 700},
+                                Vec2<float>(std::rand() % 400 - 200, std::rand() % 400 - 200));
+    time_from_last_spawn = 0;
   }
 
   player->GetVelocity() = {0, 0};
@@ -77,8 +87,6 @@ void draw() {
   renderer->SetColor(kWhite);
   renderer->FillRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
   manager.Render(renderer);
-
-
 }
 
 void finalize() {

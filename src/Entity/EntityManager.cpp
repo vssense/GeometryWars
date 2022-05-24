@@ -2,12 +2,11 @@
 #include "Entity/GeometryWarsEntities.hpp"
 
 const DetectCollisionFunc EntityManager::DetectCollision[kNumEntityTypes][kNumEntityTypes] = {
+  {(DetectCollisionFunc)CollideCircledEntities, (DetectCollisionFunc)CollideCircledEntities, (DetectCollisionFunc)CollideCircledEntities, (DetectCollisionFunc)CollideCircleWithBox},
   {(DetectCollisionFunc)CollideCircledEntities, (DetectCollisionFunc)CollideCircledEntities,
    (DetectCollisionFunc)CollideCircledEntities, (DetectCollisionFunc)CollideCircleWithBox},
   {(DetectCollisionFunc)CollideCircledEntities, (DetectCollisionFunc)CollideCircledEntities,
    (DetectCollisionFunc)CollideCircledEntities, (DetectCollisionFunc)CollideCircleWithBox},
-  {(DetectCollisionFunc)CollideCircledEntities, (DetectCollisionFunc)CollideCircledEntities,
-   (DetectCollisionFunc)CollideCircledEntities, (DetectCollisionFunc)nullptr},
   {(DetectCollisionFunc)CollideBoxWithCircle, (DetectCollisionFunc)CollideBoxWithCircle,
    (DetectCollisionFunc)CollideBoxWithCircle, (DetectCollisionFunc)nullptr}
 };
@@ -16,10 +15,10 @@ const ResponseCollisionFunc EntityManager::ResponseCollision[kNumEntityTypes][kN
   {(ResponseCollisionFunc)nullptr, (ResponseCollisionFunc)ResponsePlayerWithEnemy,
    (ResponseCollisionFunc)nullptr, (ResponseCollisionFunc)ResposePlayerWithBox},
   {(ResponseCollisionFunc)ResponseEnemyWithPlayer, (ResponseCollisionFunc)ResponseEnemyWithEnemy,
-   (ResponseCollisionFunc)ResponseEnemyWithBullet, (ResponseCollisionFunc)ResposeEnemyWithBox},
+   (ResponseCollisionFunc)ResponseEnemyWithBullet, (ResponseCollisionFunc)ResponseEnemyWithBox},
   {(ResponseCollisionFunc)nullptr, (ResponseCollisionFunc)ResponseBulletWithEnemy,
    (ResponseCollisionFunc)nullptr, (ResponseCollisionFunc)ResponseBulletWithBox},
-  {(ResponseCollisionFunc)ResposeBoxWithPlayer, (ResponseCollisionFunc)ResposeBoxWithEnemy,
+  {(ResponseCollisionFunc)ResposeBoxWithPlayer, (ResponseCollisionFunc)ResponseBoxWithEnemy,
    (ResponseCollisionFunc)ResponseBoxWithBullet, (ResponseCollisionFunc)nullptr}
 };
 

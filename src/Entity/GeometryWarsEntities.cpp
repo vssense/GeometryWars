@@ -137,22 +137,38 @@ bool CollideBoxWithCircle(BoundingBox* box, CircleShapedEntity* entity) {
   Vec2<int> origin = box->GetOrigin();
   Vec2<int> end = origin + box->GetSize();
 
+  if (center.x > end.x + radius || center.x < origin.x - radius) {
+    entity->Delete();
+    return false;
+  }
+  
+  if (center.y > end.y + radius || center.y < origin.y - radius) {
+    entity->Delete();
+    return false;
+  }
+
   if (origin.x >= center.x - radius || center.x + radius >= end.x) {
+    // std::cout << "Collide between box and enemy detected\n";
+    // std::cout << entity->GetCenter().x << ' ' << entity->GetCenter().y << ' ' << radius << '\n';
+    // std::cout << origin.x << ' ' << end.x << '\n';
     return true;
   }
 
   if (origin.y >= center.y - radius || center.y + radius >= end.y) {
+    // std::cout << "Collide between box and enemy detected\n";
+    // std::cout << entity->GetCenter().y << ' ' << entity->GetCenter().y << ' ' << radius << '\n';
+    // std::cout << origin.y << ' ' << end.y << '\n';
     return true;
   }
 
   return false;
 }
 
-void ResposeEnemyWithBox(EntityManager* manager, Enemy* enemy, BoundingBox* box) {
-  ResposeBoxWithEnemy(manager, box, enemy);
+void ResponseEnemyWithBox(EntityManager* manager, Enemy* enemy, BoundingBox* box) {
+  ResponseBoxWithEnemy(manager, box, enemy);
 }
 
-void ResposeBoxWithEnemy(EntityManager* /*manager*/, BoundingBox* box, Enemy* enemy) {
+void ResponseBoxWithEnemy(EntityManager* /*manager*/, BoundingBox* box, Enemy* enemy) {
   assert(box);
   assert(enemy);
 
@@ -208,6 +224,10 @@ void ResponseEnemyWithEnemy(EntityManager* /*manager*/, Enemy* lhs, Enemy* rhs) 
 
   Vec2<int> centers_vec = lhs->GetCenter() - rhs->GetCenter();
   Vec2<float> centers_vecf = Vec2<float>(centers_vec.x, centers_vec.y);
+
+  if (lhs->GetVelocity() * centers_vecf > 0 && rhs->GetVelocity() * centers_vecf < 0) {
+    return;
+  }
 
   Vec2<float> v1 = lhs->GetVelocity();  
   Vec2<float> v2 = rhs->GetVelocity();  

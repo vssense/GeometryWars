@@ -81,8 +81,8 @@ class Bullet : public CircleShapedEntity {
 bool CollideBoxWithCircle(BoundingBox* box, CircleShapedEntity* entity);
 bool CollideCircleWithBox(CircleShapedEntity* entity, BoundingBox* box);
 
-void ResposeEnemyWithBox(EntityManager* manager, Enemy* enemy, BoundingBox* box);
-void ResposeBoxWithEnemy(EntityManager* manager, BoundingBox* box, Enemy* enemy);
+void ResponseEnemyWithBox(EntityManager* manager, Enemy* enemy, BoundingBox* box);
+void ResponseBoxWithEnemy(EntityManager* manager, BoundingBox* box, Enemy* enemy);
 
 void ResposePlayerWithBox(EntityManager* manager, Player* player, BoundingBox* box);
 void ResposeBoxWithPlayer(EntityManager* manager, BoundingBox* box, Player* player);

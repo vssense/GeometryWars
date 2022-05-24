@@ -33,5 +33,5 @@ bool CollideCircledEntities(CircleShapedEntity* lhs, CircleShapedEntity* rhs) {
 
   Vec2<int> centers_vec = rhs->GetCenter() - lhs->GetCenter();
 
-  return centers_vec.GetLength() <= lhs->GetRadius() + rhs->GetRadius();
+  return (centers_vec.GetLength() - (lhs->GetRadius() + 0.0f + rhs->GetRadius())) < __FLT_EPSILON__;
 }
